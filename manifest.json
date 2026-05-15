@@ -10,8 +10,18 @@
   },
   "permissions": ["storage"],
   "host_permissions": [
+    "*://twitter.com/*",
     "*://*.twitter.com/*",
+    "*://x.com/*",
     "*://*.x.com/*",
+    "*://facebook.com/*",
+    "*://*.facebook.com/*",
+    "*://instagram.com/*",
+    "*://*.instagram.com/*",
+    "*://linkedin.com/*",
+    "*://*.linkedin.com/*",
+    "*://reddit.com/*",
+    "*://*.reddit.com/*",
     "https://backend-navy-tau-25.vercel.app/*"
   ],
   "background": {
@@ -27,7 +37,20 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.twitter.com/*", "*://*.x.com/*"],
+      "matches": [
+        "*://twitter.com/*",
+        "*://*.twitter.com/*",
+        "*://x.com/*",
+        "*://*.x.com/*",
+        "*://facebook.com/*",
+        "*://*.facebook.com/*",
+        "*://instagram.com/*",
+        "*://*.instagram.com/*",
+        "*://linkedin.com/*",
+        "*://*.linkedin.com/*",
+        "*://reddit.com/*",
+        "*://*.reddit.com/*"
+      ],
       "js": ["src/content_script.js"],
       "css": ["src/content_style.css"],
       "run_at": "document_idle"
@@ -36,7 +59,20 @@
   "web_accessible_resources": [
     {
       "resources": ["src/content_style.css"],
-      "matches": ["*://*.twitter.com/*", "*://*.x.com/*"]
+      "matches": [
+        "*://twitter.com/*",
+        "*://*.twitter.com/*",
+        "*://x.com/*",
+        "*://*.x.com/*",
+        "*://facebook.com/*",
+        "*://*.facebook.com/*",
+        "*://instagram.com/*",
+        "*://*.instagram.com/*",
+        "*://linkedin.com/*",
+        "*://*.linkedin.com/*",
+        "*://reddit.com/*",
+        "*://*.reddit.com/*"
+      ]
     }
   ]
 }

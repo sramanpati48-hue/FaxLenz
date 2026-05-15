@@ -10,8 +10,18 @@
   },
   "permissions": ["storage"],
   "host_permissions": [
+    "*://twitter.com/*",
     "*://*.twitter.com/*",
+    "*://x.com/*",
     "*://*.x.com/*",
+    "*://facebook.com/*",
+    "*://*.facebook.com/*",
+    "*://instagram.com/*",
+    "*://*.instagram.com/*",
+    "*://linkedin.com/*",
+    "*://*.linkedin.com/*",
+    "*://reddit.com/*",
+    "*://*.reddit.com/*",
     "https://backend-6wc5inb4v-sraman-patis-projects.vercel.app/*",
     "https://backend-navy-tau-25.vercel.app/*"
   ],
@@ -26,7 +36,20 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.twitter.com/*", "*://*.x.com/*"],
+      "matches": [
+        "*://twitter.com/*",
+        "*://*.twitter.com/*",
+        "*://x.com/*",
+        "*://*.x.com/*",
+        "*://facebook.com/*",
+        "*://*.facebook.com/*",
+        "*://instagram.com/*",
+        "*://*.instagram.com/*",
+        "*://linkedin.com/*",
+        "*://*.linkedin.com/*",
+        "*://reddit.com/*",
+        "*://*.reddit.com/*"
+      ],
       "js": ["content_script.js"],
       "css": ["styles.css"],
       "run_at": "document_idle"
@@ -35,7 +58,20 @@
   "web_accessible_resources": [
     {
       "resources": ["styles.css"],
-      "matches": ["*://*.twitter.com/*", "*://*.x.com/*"]
+      "matches": [
+        "*://twitter.com/*",
+        "*://*.twitter.com/*",
+        "*://x.com/*",
+        "*://*.x.com/*",
+        "*://facebook.com/*",
+        "*://*.facebook.com/*",
+        "*://instagram.com/*",
+        "*://*.instagram.com/*",
+        "*://linkedin.com/*",
+        "*://*.linkedin.com/*",
+        "*://reddit.com/*",
+        "*://*.reddit.com/*"
+      ]
     }
   ]
 }
