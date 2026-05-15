@@ -37,7 +37,7 @@
         box-sizing: border-box;
         clear: both;
         margin-top: 8px;
-        margin-bottom: 0;
+        margin-bottom: 8px;
         padding: 12px;
         border-radius: 8px;
         border-left: 4px solid;
@@ -49,9 +49,18 @@
         width: 100%;
         max-width: 100%;
         position: relative;
-        z-index: 10;
-        overflow: hidden;
+        z-index: 1;
+        float: none;
+        height: auto;
+        min-height: 0;
+        max-height: none;
+        visibility: visible;
+        overflow: visible;
         animation: factlens-fade-in 0.3s ease-in-out;
+      }
+      article[data-factlens-processed="1"] {
+        position: relative !important;
+        z-index: 0 !important;
       }
       .factlens-verdict.factlens-loading {
         border-left-color: #666;
@@ -312,7 +321,9 @@
       const scienceRegex = /\b(climate|species|endangered|study|research|scientific|habitat|genus|species|population|mammal|reptile|amphibian|bird|marine|coral|biodiversity|conservation|DNA|carbon|CO2|temperature|photosynthesis)\b/i;
 
       const hasLink = /https?:\/\//i.test(text);
-      const onlyEmojiOrShort = (words < 20) && (/^[\p{Emoji}\s\p{Punct}0-9@#]+$/u.test(text) || hasLink);
+      // Skip noise-only posts (emoji/symbols/whitespace only, no real text)
+      const hasRealText = /[a-zA-Z\u00A0-\u024F\u4E00-\u9FFF\u0900-\u097F\u0600-\u06FF]/.test(text);
+      const onlyEmojiOrShort = (words < 20) && (!hasRealText || hasLink);
 
       if(lifestyleRegex.test(text) || onlyEmojiOrShort){
         if(String(adjusted.verdict || '').toLowerCase() === 'disputed' || String(adjusted.verdict || '').toLowerCase() !== 'verified'){
@@ -333,7 +344,11 @@
     container.className = 'factlens-verdict factlens-loading';
     container.innerHTML = '<div class="factlens-verdict-title">🔍 Fact checking...</div>';
     container.setAttribute('role','note');
-    article.parentNode.insertBefore(container, article.nextSibling);
+    if(typeof article.after === 'function'){
+      article.after(container);
+    }else{
+      article.parentNode.insertBefore(container, article.nextSibling);
+    }
     return container;
   }
 
