@@ -242,7 +242,8 @@
       if (!article.isConnected) return;
       verifyText(text).then(verdictData=>{
         // Boost confidence slightly for posts that look like factual claims
-        const adjusted = tuneConfidenceForFacts(text, verdictData);
+        let adjusted = tuneConfidenceForFacts(text, verdictData);
+        adjusted = tuneConfidenceForInstagram(text, adjusted);
         // Rewrite weak explanations into a more assertive second-stage when confidence is low
         adjusted.explanation = rewriteWeakExplanation(adjusted.verdict, adjusted.explanation, adjusted.confidence);
         updateCard(card, adjusted);
@@ -292,6 +293,33 @@
         }
         return adjusted;
       }catch(e){return verdictData;}
+    }
+
+    function tuneConfidenceForInstagram(text, verdictData){
+      try{
+        const isInstagram = window.location.hostname === 'instagram.com' || window.location.hostname.endsWith('.instagram.com');
+        if(!isInstagram) return verdictData;
+        const adjusted = Object.assign({}, verdictData);
+        const words = (text || '').trim().split(/\s+/).filter(Boolean).length;
+
+        const lifestyleRegex = /\b(outfit|fit|new bag|travel|party|style|look|vibe|ootd|haul|unboxing|fitcheck|fashion|followers?)\b/i;
+        const scienceRegex = /\b(climate|species|endangered|study|research|scientific|habitat|genus|species|population|mammal|reptile|amphibian|bird|marine|coral|biodiversity|conservation|DNA|carbon|CO2|temperature|photosynthesis)\b/i;
+
+        const hasLink = /https?:\/\//i.test(text);
+        const onlyEmojiOrShort = (words < 20) && (/^[\p{Emoji}\s\p{Punct}0-9@#]+$/u.test(text) || hasLink);
+
+        if(lifestyleRegex.test(text) || onlyEmojiOrShort){
+          if(String(adjusted.verdict || '').toLowerCase() === 'disputed' || String(adjusted.verdict || '').toLowerCase() !== 'verified'){
+            adjusted.confidence = Math.max(0, (adjusted.confidence || 0) - 12);
+          }
+        }
+
+        if(words > 20 && String(adjusted.verdict || '').toLowerCase() === 'verified' && scienceRegex.test(text)){
+          adjusted.confidence = Math.min(99, (adjusted.confidence || 0) + 10);
+        }
+
+        return adjusted;
+      }catch(e){ return verdictData; }
     }
 
   function createPlaceholderCard(article){
