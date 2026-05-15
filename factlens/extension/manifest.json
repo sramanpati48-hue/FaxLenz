@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "FactLens",
+  "description": "AI-powered fact checker for social media posts",
+  "version": "1.0.0",
+  "icons": {
+    "16": "icons/icon16.svg",
+    "48": "icons/icon48.svg",
+    "128": "icons/icon128.svg"
+  },
+  "permissions": ["storage"],
+  "host_permissions": [
+    "*://*.twitter.com/*",
+    "*://*.x.com/*",
+    "https://backend-6wc5inb4v-sraman-patis-projects.vercel.app/*",
+    "https://backend-navy-tau-25.vercel.app/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "default-src 'self'; connect-src 'self' https://backend-6wc5inb4v-sraman-patis-projects.vercel.app https://backend-navy-tau-25.vercel.app"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.twitter.com/*", "*://*.x.com/*"],
+      "js": ["content_script.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["styles.css"],
+      "matches": ["*://*.twitter.com/*", "*://*.x.com/*"]
+    }
+  ]
+}

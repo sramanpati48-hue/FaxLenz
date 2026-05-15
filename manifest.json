@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "FactLens",
+  "description": "Injects a verdict card below Twitter/X posts to show verification status.",
+  "version": "0.1.0",
+  "icons": {
+    "16": "icons/icon16.svg",
+    "48": "icons/icon48.svg",
+    "128": "icons/icon128.svg"
+  },
+  "permissions": ["storage"],
+  "host_permissions": [
+    "*://*.twitter.com/*",
+    "*://*.x.com/*",
+    "https://backend-navy-tau-25.vercel.app/*"
+  ],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "action": {
+    "default_popup": "src/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.svg",
+      "48": "icons/icon48.svg",
+      "128": "icons/icon128.svg"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.twitter.com/*", "*://*.x.com/*"],
+      "js": ["src/content_script.js"],
+      "css": ["src/content_style.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["src/content_style.css"],
+      "matches": ["*://*.twitter.com/*", "*://*.x.com/*"]
+    }
+  ]
+}
